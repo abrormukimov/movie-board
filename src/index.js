@@ -78,14 +78,37 @@ const createPopup = (meal) => {
 </form>
 </div>
 `;
-popupSection.innerHTML = popupMarkup;
-popupSection.style.display = 'block';
-main.style.display = 'none';
-document.body.appendChild(popupSection);
-const closePopup = document.querySelector('.close-menu');
-closePopup.addEventListener('click', () => {
-  popupSection.remove();
-  main.style.display = 'grid';
-});
+  popupSection.innerHTML = popupMarkup;
+  popupSection.style.display = 'block';
+  main.style.display = 'none';
+  document.body.appendChild(popupSection);
+  const closePopup = document.querySelector('.close-menu');
+  closePopup.addEventListener('click', () => {
+    popupSection.remove();
+    main.style.display = 'grid';
+  });
 };
+
+const displayPopup = (mainTag) => {
+  const divs = mainTag.children;
+  const mealDetails = {
+    title: '',
+    category: '',
+    price: '',
+    image: '',
+  };
+
+  for (let i = 0; i < divs.length; i += 1) {
+    const btn = divs[i].children[2];
+    btn.addEventListener('click', (e) => {
+      const mealTitle = e.target.parentElement.children[1].children[0].textContent;
+      const imageSrc = e.target.parentElement.children[0].src;
+      mealDetails.title = mealTitle;
+      mealDetails.image = imageSrc;
+      createPopup(mealDetails);
+    });
+  }
+};
+
+
 
