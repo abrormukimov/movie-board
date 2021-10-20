@@ -4,4 +4,3 @@ const fetchMeals = async () => {
 };
 
 export default fetchMeals;
-
