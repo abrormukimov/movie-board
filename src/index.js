@@ -144,4 +144,38 @@ const getMeals = async () => {
       like.innerHTML = `${parseInt(prevLikes, 10) + 1} likes`;
     });
 
+    const likes1 = getLikes(
+      'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/Q6UlXEVzMxLrY3bfiZ0o/likes/',
+    );
 
+    likes1.then((data) => {
+      like.textContent = `${data[index].likes} likes`;
+    });
+
+    likeCounter.appendChild(heart);
+    likeCounter.appendChild(like);
+
+    likes.appendChild(paragraph);
+    likes.appendChild(likeCounter);
+
+    const comments = elementGenerator('button');
+    comments.textContent = 'Comments';
+
+    meal.appendChild(picture);
+    meal.appendChild(likes);
+    meal.appendChild(comments);
+
+    main.appendChild(meal);
+  });
+  displayPopup(main);
+};
+getMeals();
+
+listOne.appendChild(linkOne);
+listTwo.appendChild(linkTwo);
+listThree.appendChild(linkThree);
+
+uList.append(listOne, listTwo, listThree);
+navigation.appendChild(uList);
+header.append(logo, navigation);
+allmain.append(header, main, footer);
