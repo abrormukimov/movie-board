@@ -110,5 +110,38 @@ const displayPopup = (mainTag) => {
   }
 };
 
+const getMeals = async () => {
+  const data = await fetchMeals();
+  data.meals.forEach((meal, index) => {
+    meal = elementGenerator('section');
+    const picture = elementGenerator('img', 'image');
+    picture.src = data.meals[index].strMealThumb;
+    picture.alt = 'space-image';
+
+    meal.id = data.meals[index].idMeal;
+
+    const likes = elementGenerator('div', 'likes');
+    const paragraph = elementGenerator('p');
+    paragraph.textContent = data.meals[index].strMeal;
+
+    const likeCounter = elementGenerator('div', 'like-counter');
+    const heart = elementGenerator('img', 'heart');
+    heart.src = Like;
+    heart.alt = 'heart-image';
+    const like = elementGenerator('p');
+    like.textContent = '0 likes';
+
+    heart.addEventListener('click', async (e) => {
+      e.preventDefault();
+      postLikes(
+        'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/Q6UlXEVzMxLrY3bfiZ0o/likes/',
+        {
+          item_id: meal.id,
+        },
+      );
+
+      const prevLikes = like.textContent.split(' ')[0];
+      like.innerHTML = `${parseInt(prevLikes, 10) + 1} likes`;
+    });
 
 
