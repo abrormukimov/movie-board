@@ -17,7 +17,7 @@ const linkOne = elementGenerator('a');
 linkOne.href = '#';
 
 function mealCounter() {
-  fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood')
+  fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=chicken')
     .then((response) => response.json())
     .then((data) => {
       linkOne.textContent = `Meals (${data.meals.length})`;
