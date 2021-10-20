@@ -4,8 +4,7 @@ import icon from './icon.svg';
 import logoImage from './logo.svg';
 import Like from './Like.svg';
 import elementGenerator from './generate.js';
-import mealCounter from './generate.js';
-import { postLikes, getLikes } from './likeFunctions';
+import { postLikes, getLikes } from './likes.js';
 
 const header = elementGenerator('header');
 const logo = elementGenerator('img', 'logo');
@@ -16,6 +15,15 @@ const uList = elementGenerator('ul');
 const listOne = elementGenerator('li', 'meals');
 const linkOne = elementGenerator('a');
 linkOne.href = '#';
+
+function mealCounter() {
+  fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood')
+    .then((response) => response.json())
+    .then((data) => {
+      linkOne.textContent = `Meals (${data.meals.length})`;
+    });
+}
+mealCounter();
 
 const listTwo = elementGenerator('li');
 const linkTwo = elementGenerator('a');
