@@ -4,6 +4,7 @@ import icon from './icon.svg';
 import logoImage from './logo.svg';
 import Like from './Like.svg';
 import elementGenerator from './generate.js';
+import mealCounter from './generate.js';
 import { postLikes, getLikes } from './likeFunctions';
 
 const header = elementGenerator('header');
