@@ -8,8 +8,8 @@ import elementGenerator from './generate.js';
 import { postLikes, getLikes } from './likes.js';
 
 const header = elementGenerator('header');
-const logo = document.getElementById('#my-logo');
-logo.src = logoImage;
+const logo = elementGenerator('div', 'logo');
+logo.src = './myimage/logo.png';
 logo.alt = 'restaurant-logo';
 const navigation = elementGenerator('nav');
 const uList = elementGenerator('ul');
@@ -135,7 +135,7 @@ const getMeals = async () => {
 
     const likeCounter = elementGenerator('div', 'like-counter');
     const heart = elementGenerator('img', 'heart');
-    heart.src = Like;
+    heart.src = './myimage/like.png';
     heart.alt = 'heart-image';
     const like = elementGenerator('p');
     like.textContent = '0 likes';

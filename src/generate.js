@@ -4,4 +4,4 @@ const elementGenerator = (typeName, className) => {
   return element;
 };
 
-export default elementGenerator; 
+export default elementGenerator;
