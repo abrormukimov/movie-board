@@ -1,3 +1,8 @@
-const gameUrl = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/';
-const scoresUrl = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/oAHBEe3vcJhZ3vMizAyF/scores/';
+const fetchMeals = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=Canadian');
+  return response.json();
+};
 
+export default fetchMeals;
+
+//  involvement api = https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/Q6UlXEVzMxLrY3bfiZ0o/likes/

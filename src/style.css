@@ -1,16 +1,199 @@
 @import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Permanent+Marker&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
-html,
 body {
-  padding: 0;
-  margin: 0;
-  border: none;
-  box-sizing: border-box;
+  overflow-x: hidden;
+  font-family: 'Croissant', sans-serif;
+  background-color: rgb(45, 32, 19);
+  color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 12vh;
+  padding: 10px 250px;
+  position: fixed;
+  top: 0;
+  margin-bottom: 50px;
+  background-color: #25180a;
+  box-shadow: 1px 1px 2px green;
+}
+
+.visible {
+  display: block;
+}
+
+.invisible {
+  display: none;
+}
+
+.logo {
+  width: 150px;
+  color: yellow;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+  margin-left: 10px;
+}
+
+nav ul li {
+  margin-left: 100px;
+}
+
+nav ul li a,
+p {
+  color: #fff;
+  text-decoration: none;
+  background: -webkit-linear-gradient(orange, yellow, green);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+nav ul li a :hover {
+  text-decoration: underline;
+}
+
+.meals {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  margin-top: 100px;
+  margin-bottom: 60px;
+  width: 100vw;
+  justify-items: center;
+}
+
+.image {
+  height: 200px;
+  width: 200px;
+  border-radius: 10px;
+}
+
+section {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Source Serif Pro', serif;
 }
 
+.likes {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.likes img {
+  width: 30px;
+}
+
+.like-counter {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin-left: 20px;
+}
+
+.like-counter p {
+  font-size: 12px;
+  width: 60px;
+  margin-top: 8px;
+}
+
+.heart {
+  cursor: pointer;
+  align-self: center;
+}
+
+button {
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 30px;
+  color: yellow;
+  margin-left: 20px;
+  padding: 5px 10px;
+  background: black;
+  border: 1px solid yellow;
+  box-shadow: 1px 1px 1px green;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.popup-window {
+  position: relative;
+  width: 65%;
+  margin: 20px auto;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  border: 2px solid #000;
+  box-shadow: 1px 1px 1px yellow;
+}
+
+.meal-popup-img {
+  width: 50%;
+}
+
+.close-menu {
+  font-size: 35px;
+  position: absolute;
+  top: 33px;
+  font-weight: 900;
+  right: -30px;
+  cursor: pointer;
+}
+
+.popup-window li {
+  list-style: none;
+}
+
+.popup-img-div img {
+  margin-top: 20px;
+  width: 100%;
+  height: 400px;
+}
+
+.popup-details-div {
+  text-align: center;
+}
+
+.popup-details-div h1 {
+  font-size: 50px;
+}
+
+.details-list {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+.comments-container h3 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.comments-container form {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.input-group input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.button-div button {
+  margin-left: 0;
+}
