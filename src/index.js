@@ -1,15 +1,14 @@
 import './style.css';
 import fetchMeals from './myapi.js';
-//  import icon from './icon.png';
-//  import logoImage from './logo.png';
-// eslint-disable-next-line import/no-unresolved
-//  import Like from './Like.png';
+//  import icon from './icon.svg';
+//  import logoImage from './logo.svg';
+//  import Like from './Like.svg';
 import elementGenerator from './generate.js';
 import { postLikes, getLikes } from './likes.js';
 
 const header = elementGenerator('header');
-const logo = elementGenerator('div', 'logo');
-logo.src = './myimage/logo.png';
+const logo = elementGenerator('img', 'logo');
+logo.src = logo.svg;
 logo.alt = 'restaurant-logo';
 const navigation = elementGenerator('nav');
 const uList = elementGenerator('ul');
@@ -18,7 +17,7 @@ const linkOne = elementGenerator('a');
 linkOne.href = '#';
 
 function mealCounter() {
-  fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=chicken')
+  fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood')
     .then((response) => response.json())
     .then((data) => {
       linkOne.textContent = `Meals (${data.meals.length})`;
@@ -135,7 +134,7 @@ const getMeals = async () => {
 
     const likeCounter = elementGenerator('div', 'like-counter');
     const heart = elementGenerator('img', 'heart');
-    heart.src = './myimage/like.png';
+    heart.src = like.svg;
     heart.alt = 'heart-image';
     const like = elementGenerator('p');
     like.textContent = '0 likes';
@@ -188,6 +187,6 @@ uList.append(listOne, listTwo, listThree);
 
 navigation.appendChild(uList);
 
-header.append(logo, navigation);
+header.appendChild(logo, navigation);
 
-allmain.append(header, main, footer);
+allmain.appendChild(header, main, footer);
