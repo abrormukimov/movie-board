@@ -1,15 +1,27 @@
 import './style.css';
-import fetchMeals from './myapi.js';
-//  import icon from './icon.svg';
-//  import logoImage from './logo.svg';
-//  import Like from './Like.svg';
-import elementGenerator from './generate.js';
-import { postLikes, getLikes } from './likes.js';
+import Logo from './logo.svg';
+import likeImage from './Like.svg';
+import {
+  fetchMeals, addComment, fetchComments, fetchMealById,
+} from './api.js';
+import { postLikes, getLikes } from './likeFunctions.js';
+
+const elementGenerator = (typeName, className) => {
+  const element = document.createElement(typeName);
+  if (className) element.className = className;
+  return element;
+};
+
+const dismisAlert = (alertDiv) => {
+  setTimeout(() => {
+    alertDiv.classList.remove('success', 'error');
+    alertDiv.classList.add('invisible');
+  }, 5000);
+};
 
 const header = elementGenerator('header');
 const logo = elementGenerator('img', 'logo');
-logo.src = logo.svg;
-logo.alt = 'restaurant-logo';
+logo.src = Logo;
 const navigation = elementGenerator('nav');
 const uList = elementGenerator('ul');
 const listOne = elementGenerator('li', 'meals');
@@ -28,65 +40,145 @@ mealCounter();
 const listTwo = elementGenerator('li');
 const linkTwo = elementGenerator('a');
 linkTwo.href = '#';
-linkTwo.textContent = 'non-Vegetarian';
+linkTwo.textContent = 'Vegetarian';
 
 const listThree = elementGenerator('li');
 const linkThree = elementGenerator('a');
 linkThree.href = '#';
-linkThree.textContent = 'fried';
+linkThree.textContent = 'Diary';
 
 const footer = elementGenerator('footer');
-footer.textContent = 'Created By Tufoin & Abror under CC licence';
+footer.textContent = 'Created by Tufoin and Abror under CC licence';
 
-const allmain = document.getElementById('#allmain');
+const root = document.getElementById('root');
 
 const main = elementGenerator('main');
+
+const getCommentsLength = async (mealId) => {
+  const comments = await fetchComments(mealId);
+  if (comments.error) {
+    const length = 0;
+    if (comments.error.message === "'item_id' not found.") return length;
+  }
+  return comments.length;
+};
+
+const setMealCommentsInStore = async (mealId) => {
+  const comments = await fetchComments(mealId);
+  localStorage.setItem('comments', JSON.stringify(comments));
+};
+
+const getMealComments = async (popupSection, mealId) => {
+  await setMealCommentsInStore(mealId);
+  const commentsLength = await getCommentsLength(mealId);
+  const comments = JSON.parse(localStorage.getItem('comments'));
+  popupSection.children[1].children[2].children[0].children[1].textContent = `Comments ( ${commentsLength} )`;
+
+  if (commentsLength > 0) {
+    let commentMarkup = '';
+    const commentsTag = popupSection.children[1].children[2].children[0].children[2];
+    for (let i = 0; i < comments.length; i += 1) {
+      commentMarkup += `<p> ${comments[i].creation_date} ${comments[i].username} : ${comments[i].comment} </p>`;
+    }
+    commentsTag.innerHTML = commentMarkup;
+  }
+};
+
+const commentCreator = (popupSection, mealId) => {
+  const data = { item_id: mealId, username: '', comment: '' };
+  const nameInput = popupSection.children[1].children[2].children[2].children[0].children[0];
+  const commentInput = popupSection.children[1].children[2].children[2].children[1].children[0];
+  const commentBtn = popupSection.children[1].children[2].children[2].children[2].children[0];
+  const alertDiv = popupSection.children[1].children[2].children[0].children[0];
+
+  nameInput.addEventListener('change', (e) => {
+    data.username = e.target.value;
+  });
+  commentInput.addEventListener('change', (e) => {
+    data.comment = e.target.value;
+  });
+
+  commentBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    if (nameInput.value.length > 1 && commentInput.value.length > 1) {
+      const response = await addComment(data);
+      if (response.status === 201) {
+        setMealCommentsInStore(mealId);
+        nameInput.value = '';
+        commentInput.value = '';
+        alertDiv.innerHTML = 'Comment Created Successfully';
+        getMealComments(popupSection, mealId);
+        alertDiv.classList.remove('invisible');
+        alertDiv.classList.add('success', 'visible');
+        dismisAlert(alertDiv);
+      }
+    }
+  });
+};
+
+const displayMealDetails = async (popupSection, mealId) => {
+  const { meals } = await fetchMealById(mealId);
+  popupSection.children[1].children[1].children[1].children[0].children[0].textContent = `Region: ${meals[0].strArea}`;
+
+  popupSection.children[1].children[1].children[1].children[0].children[1].textContent = `Category: ${meals[0].strCategory}`;
+
+  popupSection.children[1].children[1].children[1].children[1].children[0].textContent = `Ingredients: ${meals[0].strIngredient1}, ${meals[0].strIngredient2} ...`;
+
+  popupSection.children[1].children[1].children[1].children[1].children[1].textContent = `Tags: ${meals[0].strTags}`;
+};
 
 const createPopup = (meal) => {
   const popupSection = elementGenerator('section', 'popup-window invisible');
   const popupMarkup = ` 
-    <small class='close-menu'>X</small>   
+    <small class='close-menu'>&times;</small>   
     <div class='blur-background'> 
-
-    <div class="popup-img-div"><img class="meal-popup-img" src="${meal.image}" alt="meal" /></div>
-    <div class="popup-details-div">
-    <h1> ${meal.title} </h1>
-    <div class="details-list">
-        <ul>
-        <li>Category: Rice</li>
-        <li>Category: Rice</li>
-        </ul>
-        <ul>
-        <li>Category: Rice</li>
-        <li>Category: Rice</li>
-        </ul>
+      
+      <div class="popup-img-div"><img class="meal-popup-img" src="${meal.image}" alt="meal" /></div>
+      <div class="popup-details-div">
+      <h1> ${meal.title} </h1>
+      <div class="details-list">
+          <ul>
+          <li>Category: Rice</li>
+          <li>Category: Rice</li>
+          </ul>
+          <ul>
+          <li>Category: Rice</li>
+          <li>Category: Rice</li>
+          </ul>
+      </div>
     </div>
+    <div class="comments-container">
+  <div class="comments-div">
+  <div class='alert'> </div>
+    <h3></h3>
+    <div></div>
   </div>
-  <div class="comments-container">
-<div class="comments-div">
-  <h3>Comments (3)</h3>
-</div>
-<h3>Add a comment</h3>
-<form>
-  <div class="input-group">
-    <input type="text" class="nameInput" placeholder="Your name" />
-  </div>
-  <div class="input-group">
-    <textarea
-      name=""
-      id="commentInput"
-      cols="30"
-      rows="10"
-      placeholder="Your insights"
-    ></textarea>
-  </div>
-  <div class=''button-div>
-  <button type='submit' class='submit-comment-btn'> Comment </button>
-  </div>
-</form>
+  <h3>Add a comment</h3>
+  <form>
+    <div class="input-group">
+      <input type="text" id="nameInput" placeholder="Your name" required/>
+    </div>
+    <div class="input-group">
+      <textarea
+        name=""
+        id="commentInput"
+        cols="30"
+        rows="10"
+        placeholder="Your insights"
+      required></textarea>
+    </div>
+    <div class=''button-div>
+    <button type='submit' class='submit-comment-btn'> Comment </button>
+    </div>
+  </form>
 </div>
 `;
   popupSection.innerHTML = popupMarkup;
+  commentCreator(popupSection, meal.id);
+  getMealComments(popupSection, meal.id);
+  displayMealDetails(popupSection, meal.id);
+
   popupSection.style.display = 'block';
   main.style.display = 'none';
   document.body.appendChild(popupSection);
@@ -100,9 +192,8 @@ const createPopup = (meal) => {
 const displayPopup = (mainTag) => {
   const divs = mainTag.children;
   const mealDetails = {
+    id: '',
     title: '',
-    category: '',
-    price: '',
     image: '',
   };
 
@@ -111,6 +202,7 @@ const displayPopup = (mainTag) => {
     btn.addEventListener('click', (e) => {
       const mealTitle = e.target.parentElement.children[1].children[0].textContent;
       const imageSrc = e.target.parentElement.children[0].src;
+      mealDetails.id = e.target.parentElement.id;
       mealDetails.title = mealTitle;
       mealDetails.image = imageSrc;
       createPopup(mealDetails);
@@ -125,35 +217,32 @@ const getMeals = async () => {
     const picture = elementGenerator('img', 'image');
     picture.src = data.meals[index].strMealThumb;
     picture.alt = 'space-image';
-
     meal.id = data.meals[index].idMeal;
-
     const likes = elementGenerator('div', 'likes');
     const paragraph = elementGenerator('p');
     paragraph.textContent = data.meals[index].strMeal;
 
     const likeCounter = elementGenerator('div', 'like-counter');
-    const heart = elementGenerator('img', 'heart');
-    heart.src = like.svg;
+    const heart = elementGenerator('img');
+    heart.src = likeImage;
     heart.alt = 'heart-image';
     const like = elementGenerator('p');
-    like.textContent = '0 likes';
+    like.textContent = '0 like';
 
     heart.addEventListener('click', async (e) => {
       e.preventDefault();
       postLikes(
-        'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/Q6UlXEVzMxLrY3bfiZ0o/likes/',
+        'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/EotQWBCIBSjk0iF4aIlc/likes/',
         {
           item_id: meal.id,
         },
       );
-
       const prevLikes = like.textContent.split(' ')[0];
       like.innerHTML = `${parseInt(prevLikes, 10) + 1} likes`;
     });
 
     const likes1 = getLikes(
-      'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/Q6UlXEVzMxLrY3bfiZ0o/likes/',
+      'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/EotQWBCIBSjk0iF4aIlc/likes/',
     );
 
     likes1.then((data) => {
@@ -189,4 +278,4 @@ navigation.appendChild(uList);
 
 header.appendChild(logo, navigation);
 
-allmain.appendChild(header, main, footer);
+root.append(header, main, footer);
