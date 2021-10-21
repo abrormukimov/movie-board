@@ -3,7 +3,7 @@ import Logo from './logo.svg';
 import likeImage from './Like.svg';
 import {
   fetchMeals, addComment, fetchComments, fetchMealById,
-} from './api.js';
+} from './myapi.js';
 import { postLikes, getLikes } from './likeFunctions.js';
 
 const elementGenerator = (typeName, className) => {
