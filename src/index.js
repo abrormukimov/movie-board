@@ -1,13 +1,14 @@
 import './style.css';
 import fetchMeals from './myapi.js';
-import icon from './icon.svg';
-import logoImage from './logo.svg';
-import Like from './Like.svg';
+//  import icon from './icon.png';
+//  import logoImage from './logo.png';
+// eslint-disable-next-line import/no-unresolved
+//  import Like from './Like.png';
 import elementGenerator from './generate.js';
 import { postLikes, getLikes } from './likes.js';
 
 const header = elementGenerator('header');
-const logo = elementGenerator('img', 'logo');
+const logo = document.getElementById('#my-logo');
 logo.src = logoImage;
 logo.alt = 'restaurant-logo';
 const navigation = elementGenerator('nav');
@@ -38,7 +39,7 @@ linkThree.textContent = 'fried';
 const footer = elementGenerator('footer');
 footer.textContent = 'Created By Tufoin & Abror under CC licence';
 
-const allmain = document.getElementById('allmain');
+const allmain = document.getElementById('#allmain');
 
 const main = elementGenerator('main');
 
@@ -184,6 +185,9 @@ listTwo.appendChild(linkTwo);
 listThree.appendChild(linkThree);
 
 uList.append(listOne, listTwo, listThree);
+
 navigation.appendChild(uList);
+
 header.append(logo, navigation);
+
 allmain.append(header, main, footer);
