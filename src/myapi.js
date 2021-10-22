@@ -16,7 +16,7 @@ export const addComment = async (data) => {
     headers: { 'Content-type': 'application/json' },
   });
 
-  return response
+  return response;
 };
 
 export const fetchComments = async (itemId) => {
