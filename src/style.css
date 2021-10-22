@@ -16,7 +16,7 @@
 
 body {
   font-family: 'Croissant', sans-serif;
-  background-color: rgb(45, 32, 19);
+  background-color: hsl(0deg 8% 8%);
   color: #fff;
 }
 
@@ -148,19 +148,20 @@ section {
 button {
   font-family: 'Poppins', sans-serif;
   margin-bottom: 30px;
-  color: yellow;
+  color: rgb(143, 5, 102);
   margin-left: 20px;
   padding: 5px 10px;
-  background: #23180d;
-  border: 1px solid yellow;
+  background: hsl(0deg 8% 8%);
+  border: 1px solid rgb(65, 24, 56);
   box-shadow: 1px 1px 1px green;
   cursor: pointer;
   border-radius: 8px;
   font-size: 1rem;
+  font-weight: bold;
 }
 
 button:hover {
-  background-color: black;
+  background-color: rgb(107, 106, 106);
 }
 
 .popup-window {
@@ -171,8 +172,8 @@ button:hover {
   bottom: 10px;
   padding: 20px;
   backdrop-filter: blur(4px);
-  background-color: rgb(45, 32, 19);
-  border: 2px solid rgba(255, 255, 0, 0.3);
+  background-color: hsl(0deg 8% 8%);
+  border: 2px solid rgba(68, 2, 51, 0.3);
   box-shadow: 1px 1px 1px rgba(0, 128, 0, 0.5);
   animation-name: modalSlideUp;
   animation-duration: 1s;
@@ -192,7 +193,7 @@ button:hover {
 
 .close-menu {
   font-family: 'Poppins', sans-serif;
-  background: -webkit-linear-gradient(orange, yellow, green);
+  background: -webkit-linear-gradient(rgb(92, 61, 4), rgb(179, 179, 4), rgb(1, 134, 1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 100px;
@@ -204,7 +205,7 @@ button:hover {
 }
 
 .close-menu:hover {
-  background: green;
+  background: rgb(85, 2, 50);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -321,7 +322,6 @@ textarea:focus {
 footer {
   font-family: 'Poppins', sans-serif;
   padding: 10px 100px;
-  border-top: 2px solid #23180d;
   position: fixed;
   bottom: 0;
   width: 100vw;
