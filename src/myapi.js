@@ -16,7 +16,7 @@ export const addComment = async (data) => {
     headers: { 'Content-type': 'application/json' },
   });
 
-  return response;
+  return response
 };
 
 export const fetchComments = async (itemId) => {
@@ -25,9 +25,4 @@ export const fetchComments = async (itemId) => {
   return response.json();
 };
 
-export const fetchMealById = async (mealId) => {
-  const response = await fetch(
-    `${process.env.MEAL_API}/lookup.php?i=${mealId}`,
-  );
-  return response.json();
-};
+
