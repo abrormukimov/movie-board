@@ -2,7 +2,7 @@ import './style.css';
 import Logo from './logo.svg';
 import likeImage from './Like.svg';
 import {
-  fetchMeals, addComment, fetchComments, fetchMealById,
+  fetchMeals, addComment, fetchComments, fetchMealById, APP_ID,
 } from './myapi.js';
 import { postLikes, getLikes } from './likeFunctions.js';
 
@@ -54,29 +54,15 @@ const root = document.getElementById('root');
 
 const main = elementGenerator('main');
 
-const getCommentsLength = async (mealId) => {
-  const comments = await fetchComments(mealId);
-  if (comments.error) {
-    const length = 0;
-    if (comments.error.message === "'item_id' not found.") return length;
-  }
-  return comments.length;
-};
-
-const setMealCommentsInStore = async (mealId) => {
-  const comments = await fetchComments(mealId);
-  localStorage.setItem('comments', JSON.stringify(comments));
-};
-
 const getMealComments = async (popupSection, mealId) => {
-  await setMealCommentsInStore(mealId);
-  const commentsLength = await getCommentsLength(mealId);
-  const comments = JSON.parse(localStorage.getItem('comments'));
-  popupSection.children[1].children[2].children[0].children[1].textContent = `Comments ( ${commentsLength} )`;
-
-  if (commentsLength > 0) {
+  // await setMealCommentsInStore(mealId);
+  // const commentsLength = await getCommentsLength(mealId);
+  // const comments = JSON.parse(localStorage.getItem('comments'));
+  const comments = await fetchComments(mealId);
+  document.querySelector('.comments-div h3').textContent = `Comments ( ${comments.length || 0} )`;
+  if (!comments.error) {
     let commentMarkup = '';
-    const commentsTag = popupSection.children[1].children[2].children[0].children[2];
+    const commentsTag = popupSection.querySelector('.comments-list');
     for (let i = 0; i < comments.length; i += 1) {
       commentMarkup += `<p> ${comments[i].creation_date} ${comments[i].username} : ${comments[i].comment} </p>`;
     }
@@ -84,49 +70,6 @@ const getMealComments = async (popupSection, mealId) => {
   }
 };
 
-const commentCreator = (popupSection, mealId) => {
-  const data = { item_id: mealId, username: '', comment: '' };
-  const nameInput = popupSection.children[1].children[2].children[2].children[0].children[0];
-  const commentInput = popupSection.children[1].children[2].children[2].children[1].children[0];
-  const commentBtn = popupSection.children[1].children[2].children[2].children[2].children[0];
-  const alertDiv = popupSection.children[1].children[2].children[0].children[0];
-
-  nameInput.addEventListener('change', (e) => {
-    data.username = e.target.value;
-  });
-  commentInput.addEventListener('change', (e) => {
-    data.comment = e.target.value;
-  });
-
-  commentBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    if (nameInput.value.length > 1 && commentInput.value.length > 1) {
-      const response = await addComment(data);
-      if (response.status === 201) {
-        setMealCommentsInStore(mealId);
-        nameInput.value = '';
-        commentInput.value = '';
-        alertDiv.innerHTML = 'Comment Created Successfully';
-        getMealComments(popupSection, mealId);
-        alertDiv.classList.remove('invisible');
-        alertDiv.classList.add('success', 'visible');
-        dismisAlert(alertDiv);
-      }
-    }
-  });
-};
-
-const displayMealDetails = async (popupSection, mealId) => {
-  const { meals } = await fetchMealById(mealId);
-  popupSection.children[1].children[1].children[1].children[0].children[0].textContent = `Region: ${meals[0].strArea}`;
-
-  popupSection.children[1].children[1].children[1].children[0].children[1].textContent = `Category: ${meals[0].strCategory}`;
-
-  popupSection.children[1].children[1].children[1].children[1].children[0].textContent = `Ingredients: ${meals[0].strIngredient1}, ${meals[0].strIngredient2} ...`;
-
-  popupSection.children[1].children[1].children[1].children[1].children[1].textContent = `Tags: ${meals[0].strTags}`;
-};
 
 const createPopup = (meal) => {
   const popupSection = elementGenerator('section', 'popup-window invisible');
@@ -150,9 +93,9 @@ const createPopup = (meal) => {
     </div>
     <div class="comments-container">
   <div class="comments-div">
-  <div class='alert'> </div>
+    <div class='alert'></div>
     <h3></h3>
-    <div></div>
+    <div class="comments-list"></div>
   </div>
   <h3>Add a comment</h3>
   <form>
@@ -211,6 +154,10 @@ const displayPopup = (mainTag) => {
 };
 
 const getMeals = async () => {
+  const likes1 = getLikes(
+    `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/${APP_ID}/likes/`,
+  );
+
   const data = await fetchMeals();
   data.meals.forEach((meal, index) => {
     meal = elementGenerator('section');
@@ -231,8 +178,8 @@ const getMeals = async () => {
 
     heart.addEventListener('click', async (e) => {
       e.preventDefault();
-      postLikes(
-        'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/EotQWBCIBSjk0iF4aIlc/likes/',
+      await postLikes(
+        `https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/${APP_ID}/likes/`,
         {
           item_id: meal.id,
         },
@@ -241,12 +188,9 @@ const getMeals = async () => {
       like.innerHTML = `${parseInt(prevLikes, 10) + 1} likes`;
     });
 
-    const likes1 = getLikes(
-      'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/EotQWBCIBSjk0iF4aIlc/likes/',
-    );
-
     likes1.then((data) => {
-      like.textContent = `${data[index].likes} likes`;
+      const foundItem = data.find((item) => meal.id === item.item_id);
+      like.textContent = `${foundItem?.likes || 0} likes`;
     });
 
     likeCounter.appendChild(heart);
