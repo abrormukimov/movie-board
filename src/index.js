@@ -70,6 +70,49 @@ const getMealComments = async (popupSection, mealId) => {
   }
 };
 
+const commentCreator = (popupSection, mealId) => {
+  const data = { item_id: mealId, username: '', comment: '' };
+  const nameInput = popupSection.children[1].children[2].children[2].children[0].children[0];
+  const commentInput = popupSection.children[1].children[2].children[2].children[1].children[0];
+  const commentBtn = popupSection.children[1].children[2].children[2].children[2].children[0];
+  const alertDiv = popupSection.children[1].children[2].children[0].children[0];
+
+  nameInput.addEventListener('change', (e) => {
+    data.username = e.target.value;
+  });
+  commentInput.addEventListener('change', (e) => {
+    data.comment = e.target.value;
+  });
+
+  commentBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    if (nameInput.value.length > 0 && commentInput.value.length > 0) { // NOTE: revert it back
+      const response = await addComment(data);
+      if (response?.status === 201) {
+        // await setMealCommentsInStore(mealId);
+        nameInput.value = '';
+        commentInput.value = '';
+        alertDiv.innerHTML = 'Comment Created Successfully';
+        getMealComments(popupSection, mealId);
+        alertDiv.classList.remove('invisible');
+        alertDiv.classList.add('success', 'visible');
+        dismisAlert(alertDiv);
+      }
+    }
+  });
+};
+
+const displayMealDetails = async (popupSection, mealId) => {
+  const { meals } = await fetchMealById(mealId);
+  popupSection.children[1].children[1].children[1].children[0].children[0].textContent = `Region: ${meals[0].strArea}`;
+
+  popupSection.children[1].children[1].children[1].children[0].children[1].textContent = `Category: ${meals[0].strCategory}`;
+
+  popupSection.children[1].children[1].children[1].children[1].children[0].textContent = `Ingredients: ${meals[0].strIngredient1}, ${meals[0].strIngredient2} ...`;
+
+  popupSection.children[1].children[1].children[1].children[1].children[1].textContent = `Tags: ${meals[0].strTags}`;
+};
 
 const createPopup = (meal) => {
   const popupSection = elementGenerator('section', 'popup-window invisible');
