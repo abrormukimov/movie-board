@@ -55,9 +55,6 @@ const root = document.getElementById('root');
 const main = elementGenerator('main');
 
 const getMealComments = async (popupSection, mealId) => {
-  // await setMealCommentsInStore(mealId);
-  // const commentsLength = await getCommentsLength(mealId);
-  // const comments = JSON.parse(localStorage.getItem('comments'));
   const comments = await fetchComments(mealId);
   document.querySelector('.comments-div h3').textContent = `Comments ( ${comments.length || 0} )`;
   if (!comments.error) {
