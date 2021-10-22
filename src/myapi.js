@@ -1,11 +1,16 @@
+const MEAL_API = 'https://www.themealdb.com/api/json/v1/1';
+// const INVOLVEMENT_API = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/Q6UlXEVzMxLrY3bfiZ0o/likes/';
+const INVOLVEMENT_API_URL = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/';
+export const APP_ID = 'EotQWBCIBSjk0iF4aIlc';
+
 export const fetchMeals = async () => {
-  const url = `${process.env.MEAL_API}/filter.php?c=Seafood`;
+  const url = `${MEAL_API}/filter.php?c=Seafood`;
   const response = await fetch(url);
   return response.json();
 };
 
 export const addComment = async (data) => {
-  const url = `${process.env.INVOLVEMENT_API}/${process.env.APP_ID}/comments`;
+  const url = `${INVOLVEMENT_API_URL}${APP_ID}/comments`;
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify({
@@ -20,14 +25,14 @@ export const addComment = async (data) => {
 };
 
 export const fetchComments = async (itemId) => {
-  const url = `${process.env.INVOLVEMENT_API}/${process.env.APP_ID}/comments?item_id=${itemId}`;
+  const url = `${INVOLVEMENT_API_URL}${APP_ID}/comments?item_id=${itemId}`;
   const response = await fetch(url);
   return response.json();
 };
 
 export const fetchMealById = async (mealId) => {
   const response = await fetch(
-    `${process.env.MEAL_API}/lookup.php?i=${mealId}`,
+    `${MEAL_API}/lookup.php?i=${mealId}`,
   );
   return response.json();
 };
