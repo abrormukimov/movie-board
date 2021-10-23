@@ -5,10 +5,10 @@ Lifestyle Restaurant
 
 
 > This is a capstone project of a Restaurant app from a chosen API which allows you to make a choice of dish and you can as well like and comment on it.
-> ![screenshot](../images/mypage.png)
+> ![screenshot](./images/mypage.png)
 > ![screenshot](./images/mypopup.png)
 
-> ![Test screenshot](../images/mytest.png)
+> ![Test screenshot](./images/mytest.png)
 
 
 Additional description about the project and its features.
