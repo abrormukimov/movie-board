@@ -1,21 +1,27 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
 # Project Name
-API Leaderboard
+Lifestyle Restaurant
 
 
-> This project is designed to display the User and scores of a game getting them from an API and creating them there.
-> ![screenshot](./images/picshot.png)
+> This is a capstone project of a Restaurant app from a chosen API which allows you to make a choice of dish and you can as well like and comment on it.
+> ![screenshot](./images/mypage.png)
+> ![screenshot](./images/mypopup.png)
+
+> ![Test screenshot](./images/mytest.png)
 
 
 Additional description about the project and its features.
 
-- Scores are inputed
-- After submiting they are sent to the API
-- When you refresh it updates the score board by getting back the API information
+- Number of likes increases after click
+- when comment is clicked, a popup appears 
+- in the popup you can add a comment about that particular dish
+- your comment appears up and number of comments on that particular dish also appears
+- popup can be closed and another dish selected
 
 ## Built With
 
+- kanban board
 - ![](https://img.shields.io/badge/Github-blueviolet)
 - ![](https://img.shields.io/badge/Javascript-blue)
 - ![](https://img.shields.io/badge/HTML-purple) 
