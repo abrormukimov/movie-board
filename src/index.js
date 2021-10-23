@@ -84,10 +84,9 @@ const commentCreator = (popupSection, mealId) => {
   commentBtn.addEventListener('click', async (e) => {
     e.preventDefault();
 
-    if (nameInput.value.length > 0 && commentInput.value.length > 0) { // NOTE: revert it back
+    if (nameInput.value.length > 0 && commentInput.value.length > 0) {
       const response = await addComment(data);
       if (response?.status === 201) {
-        // await setMealCommentsInStore(mealId);
         nameInput.value = '';
         commentInput.value = '';
         alertDiv.innerHTML = 'Comment Created Successfully';

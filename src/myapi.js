@@ -1,5 +1,4 @@
 const MEAL_API = 'https://www.themealdb.com/api/json/v1/1';
-// const INVOLVEMENT_API = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/Q6UlXEVzMxLrY3bfiZ0o/likes/';
 const INVOLVEMENT_API_URL = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/';
 export const APP_ID = 'EotQWBCIBSjk0iF4aIlc';
 
